@@ -6,9 +6,9 @@ namespace ScreenSound.API.Endpoints;
 
 public static class MusicasExtensions
 {
-    public static void AddEndpointMusicas(this WebApplication app)
+    public static void AddEndPointsMusicas(this WebApplication app)
     {
-        
+        #region Endpoint Músicas
         app.MapGet("/Musicas", ([FromServices] DAL<Musica> dal) =>
         {
             return Results.Ok(dal.Listar());
@@ -17,7 +17,12 @@ public static class MusicasExtensions
         app.MapGet("/Musicas/{nome}", ([FromServices] DAL<Musica> dal, string nome) =>
         {
             var musica = dal.RecuperarPor(a => a.Nome.ToUpper().Equals(nome.ToUpper()));
-            return musica is null ? Results.NotFound() : Results.Ok(musica);
+            if (musica is null)
+            {
+                return Results.NotFound();
+            }
+            return Results.Ok(musica);
+
         });
 
         app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] Musica musica) =>
@@ -45,10 +50,11 @@ public static class MusicasExtensions
             }
             musicaAAtualizar.Nome = musica.Nome;
             musicaAAtualizar.AnoLancamento = musica.AnoLancamento;
-    
+
             dal.Atualizar(musicaAAtualizar);
             return Results.Ok();
         });
+        #endregion
+
     }
-    
 }

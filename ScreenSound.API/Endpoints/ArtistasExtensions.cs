@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ScreenSound.API.Request;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
 
@@ -6,7 +7,7 @@ namespace ScreenSound.API.Endpoints;
 
 public static class ArtistasExtensions
 {
-    public static void addEndpontsArtistas(this WebApplication app)
+    public static void AddEndpontsArtistas(this WebApplication app)
     {
         app.MapGet("/Artistas", ([FromServices] DAL<Artista> dal) =>
         {
@@ -20,8 +21,9 @@ public static class ArtistasExtensions
             return artista is null ? Results.NotFound() : Results.Ok(artista);
         });
 
-        app.MapPost("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody] Artista artista) =>
+        app.MapPost("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody] ArtistaRequest artistaRequest) =>
         {
+            var artista = new Artista(artistaRequest.name, artistaRequest.bio);
             dal.Adicionar(artista);
             return Results.Ok();
 

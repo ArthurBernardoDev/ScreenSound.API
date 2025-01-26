@@ -13,8 +13,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 var app = builder.Build();
 
-app.addEndpontsArtistas();
-app.AddEndpointMusicas();
+app.AddEndpontsArtistas();
+app.AddEndPointsMusicas();
 
 app.UseSwagger();
 app.UseSwaggerUI();
